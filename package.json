@@ -1,0 +1,52 @@
+{
+  "name": "gen-diff-onlyal",
+  "version": "1.0.0",
+  "description": "Compares two configuration files and shows a difference.",
+  "main": "dist/index.js",
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "NODE_ENV=production babel src --out-dir dist",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Onlyal33/backend-project-lvl2.git"
+  },
+  "keywords": [
+    "difference",
+    "generator",
+    "ini",
+    "json",
+    "yaml"
+  ],
+  "author": "onlyal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Onlyal33/backend-project-lvl2/issues"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "homepage": "https://github.com/Onlyal33/backend-project-lvl2#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/preset-env": "^7.6.3",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.20.1"
+  },
+  "dependencies": {
+    "commander": "^3.0.2"
+  }
+}
