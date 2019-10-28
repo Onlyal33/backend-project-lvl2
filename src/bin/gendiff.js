@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-import help from '../help';
+import genDiff from '..';
 
-help();
+genDiff();
