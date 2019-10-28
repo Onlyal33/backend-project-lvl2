@@ -1,12 +1,13 @@
 import _ from 'lodash';
 import fs from 'fs';
 
-const getConfig = (path) => JSON.parse(fs.readFileSync(path));
+const readFile = (path) => fs.readFileSync(path);
+const getConfig = (data) => JSON.parse(data);
 const getTextProperty = (key, value) => `${key}: ${value}\n`;
 
 export default (firstPath, secondPath) => {
-  const firstConfig = getConfig(firstPath);
-  const secondConfig = getConfig(secondPath);
+  const firstConfig = getConfig(readFile(firstPath));
+  const secondConfig = getConfig(readFile(secondPath));
   const halfResult = Object.keys(firstConfig).reduce((acc, key) => {
     const firstValue = firstConfig[key];
     if (_.has(secondConfig, key)) {
