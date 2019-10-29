@@ -12,3 +12,6 @@ start:
 
 prepublish:
 	npm publish --dry-run
+
+test-coverage:
+	npm test -- --coverage
