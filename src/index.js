@@ -33,7 +33,7 @@ const compareConfigs = (firstConfig, secondConfig) => {
 };
 
 export default (firstPath, secondPath) => {
-  const firstConfig = getConfig(fs.readFileSync(firstPath), path.extname(firstPath));
-  const secondConfig = getConfig(fs.readFileSync(secondPath), path.extname(secondPath));
+  const firstConfig = getConfig(fs.readFileSync(firstPath, 'utf-8'), path.extname(firstPath));
+  const secondConfig = getConfig(fs.readFileSync(secondPath, 'utf-8'), path.extname(secondPath));
   return compareConfigs(firstConfig, secondConfig);
 };

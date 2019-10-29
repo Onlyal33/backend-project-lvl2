@@ -12,3 +12,6 @@ comparing .json files
 
 comparing .yml files
 [![asciicast](https://asciinema.org/a/EqziqqqevDPu3U21WErWgY664.svg)](https://asciinema.org/a/EqziqqqevDPu3U21WErWgY664)
+
+comparing .ini files
+[![asciicast](https://asciinema.org/a/lp25o1ofzNWKUsufD8GAO0nWW.svg)](https://asciinema.org/a/lp25o1ofzNWKUsufD8GAO0nWW)
