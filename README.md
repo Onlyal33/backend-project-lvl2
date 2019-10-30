@@ -8,10 +8,13 @@ Compares two configuration files and shows a difference.
 How to use:
 
 comparing .json files
+
 [![asciicast](https://asciinema.org/a/PdpuqfVHErMpG9Zka4wjRwEIN.svg)](https://asciinema.org/a/PdpuqfVHErMpG9Zka4wjRwEIN)
 
-comparing .yml files
-[![asciicast](https://asciinema.org/a/EqziqqqevDPu3U21WErWgY664.svg)](https://asciinema.org/a/EqziqqqevDPu3U21WErWgY664)
-
 comparing .ini files
+
 [![asciicast](https://asciinema.org/a/lp25o1ofzNWKUsufD8GAO0nWW.svg)](https://asciinema.org/a/lp25o1ofzNWKUsufD8GAO0nWW)
+
+comparing .yml files
+
+[![asciicast](https://asciinema.org/a/R9djae50Bhfl8MEumdNvOuY5i.svg)](https://asciinema.org/a/R9djae50Bhfl8MEumdNvOuY5i)

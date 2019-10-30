@@ -6,7 +6,7 @@ import genDiff from '..';
 program
   .version(version)
   .description(description)
-  .option('-f, --format [type]', 'Output format')
+  .option('-f, --format [type]', 'Output format', 'plain text')
   .arguments('<firstConfig> <secondConfig>')
   .action((firstConfig, secondConfig) => console.log(genDiff(firstConfig, secondConfig)))
   .parse(process.argv);
