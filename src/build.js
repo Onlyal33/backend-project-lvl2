@@ -1,49 +1,42 @@
 import _ from 'lodash';
 
-const addObjectToDiff = (diff, status, key, value, nesting = 1) => [...diff, {
-  status,
-  key,
-  value,
-  nesting,
-}];
+const addToDiff = {
+  added: (diff, key, valueAfter) => [...diff, { status: 'added', key, valueAfter }],
+  removed: (diff, key, valueBefore) => [...diff, { status: 'removed', key, valueBefore }],
+  unchanged: (diff, key, value) => [...diff, { status: 'unchanged', key, value }],
+  changed: (diff, key, valueBefore, valueAfter) => [...diff, {
+    status: 'changed',
+    key,
+    valueBefore,
+    valueAfter,
+  }],
+  parent: (diff, key, children) => [...diff, { status: 'parent', key, children }],
+};
 
-const addParentToDiff = (diff, status, key, children, nesting = 1) => [...diff, {
-  status,
-  key,
-  children,
-  nesting,
-}];
-
-const build = (data1, data2, acc = [], nesting = 1) => {
+const build = (data1, data2, acc = []) => {
   const intermediateResult = Object.keys(data1).reduce((accIter, key) => {
-    const firstValue = data1[key];
-    const secondValue = data2[key];
+    const valueBefore = data1[key];
+    const valueAfter = data2[key];
     if (!_.has(data2, key)) {
-      return addObjectToDiff(accIter, 'removed', key, firstValue, nesting);
+      return addToDiff.removed(accIter, key, valueBefore);
     }
 
-    if (firstValue === secondValue) {
-      return addObjectToDiff(accIter, 'unchanged', key, firstValue, nesting);
+    if (valueBefore === valueAfter) {
+      return addToDiff.unchanged(accIter, key, valueBefore);
     }
 
     if (!(data1[key] instanceof Object) || !(data2[key] instanceof Object)) {
-      return addObjectToDiff(
-        addObjectToDiff(accIter, 'removed', key, firstValue, nesting),
-        'added',
-        key,
-        secondValue,
-        nesting,
-      );
+      return addToDiff.changed(accIter, key, valueBefore, valueAfter);
     }
 
-    const children = build(data1[key], data2[key], [], nesting + 1);
-    return addParentToDiff(accIter, 'parent', key, children, nesting);
+    const children = build(data1[key], data2[key], []);
+    return addToDiff.parent(accIter, key, children);
   },
   acc);
 
   return Object.keys(data2).reduce((accIter, key) => {
     const value = data2[key];
-    return _.has(data1, key) ? accIter : addObjectToDiff(accIter, 'added', key, value, nesting);
+    return _.has(data1, key) ? accIter : addToDiff.added(accIter, key, value);
   }, intermediateResult);
 };
 

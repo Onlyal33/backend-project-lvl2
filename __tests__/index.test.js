@@ -1,31 +1,32 @@
 import fs from 'fs';
 import gendiff from '../src';
 
-const getPath = (fileName, subfolder = '') => `${__dirname}/__fixtures__/${subfolder}${fileName}`;
+const getPath = (fileName) => `${__dirname}/__fixtures__/${fileName}`;
 
-const flatResult = fs.readFileSync(getPath('__flat__/result'), 'utf8');
+const result = fs.readFileSync(getPath('result.txt'), 'utf8').trim();
 
 test.each([
-  ['before.json', 'after.json', '__flat__/', flatResult],
-  ['before.yml', 'after.yml', '__flat__/', flatResult],
-  ['before.ini', 'after.ini', '__flat__/', flatResult],
+  ['before.json', 'after.json', result],
+  ['before.yml', 'after.yml', result],
+  ['before.ini', 'after.ini', result],
 ])(
-  'plain data',
-  (fileName1, fileName2, subfolder, expected) => {
-    expect(gendiff(getPath(fileName1, subfolder), getPath(fileName2, subfolder))).toBe(expected);
+  'default output',
+  (fileName1, fileName2, expected) => {
+    const received = gendiff(getPath(fileName1), getPath(fileName2), 'default');
+    expect(received).toBe(expected);
   },
 );
 
-const nestedResult = fs.readFileSync(getPath('__nested__/result'), 'utf8');
+const plainResult = fs.readFileSync(getPath('plainResult.txt'), 'utf8').trim();
 
 test.each([
-  ['before.json', 'after.json', '__nested__/', nestedResult],
-  ['before.yml', 'after.yml', '__nested__/', nestedResult],
-  ['before.ini', 'after.ini', '__nested__/', nestedResult],
+  ['before.json', 'after.json', plainResult],
+  ['before.yml', 'after.yml', plainResult],
+  ['before.ini', 'after.ini', plainResult],
 ])(
-  'nested data',
-  (fileName1, fileName2, subfolder, expected) => {
-    const received = gendiff(getPath(fileName1, subfolder), getPath(fileName2, subfolder));
+  'output in plain format',
+  (fileName1, fileName2, expected) => {
+    const received = gendiff(getPath(fileName1), getPath(fileName2), 'plain');
     expect(received).toBe(expected);
   },
 );

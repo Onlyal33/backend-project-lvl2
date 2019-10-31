@@ -18,3 +18,7 @@ comparing .ini files
 comparing .yml files
 
 [![asciicast](https://asciinema.org/a/R9djae50Bhfl8MEumdNvOuY5i.svg)](https://asciinema.org/a/R9djae50Bhfl8MEumdNvOuY5i)
+
+generating output in plain text format
+
+[![asciicast](https://asciinema.org/a/24dR13SuKGdezPSnO2BYKJ7Vk.svg)](https://asciinema.org/a/24dR13SuKGdezPSnO2BYKJ7Vk)
