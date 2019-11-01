@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const stringifyValue = (value) => {
-  if (value instanceof Object) {
+  if (_.isObject(value)) {
     return '[complex value]';
   }
 

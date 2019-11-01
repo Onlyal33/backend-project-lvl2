@@ -2,14 +2,19 @@ import fs from 'fs';
 import path from 'path';
 import parsers from './parsers';
 import build from './build';
-import formatDefault from './formatters/formatDefault';
+import formatTree from './formatters/formatTree';
 import formatPlain from './formatters/formatPlain';
+import formatJSON from './formatters/formatJSON';
 
-const parseConfig = (data, extension) => parsers[extension](data);
+const parseConfig = (data, extension) => {
+  const [parser] = parsers.filter((parserType) => parserType.check(extension));
+  return parser.func(data);
+};
 
 const getFormat = {
-  default: formatDefault,
+  tree: formatTree,
   plain: formatPlain,
+  json: formatJSON,
 };
 
 export default (path1, path2, format) => {

@@ -12,7 +12,7 @@ test.each([
 ])(
   'default output',
   (fileName1, fileName2, expected) => {
-    const received = gendiff(getPath(fileName1), getPath(fileName2), 'default');
+    const received = gendiff(getPath(fileName1), getPath(fileName2), 'tree');
     expect(received).toBe(expected);
   },
 );
@@ -24,9 +24,23 @@ test.each([
   ['before.yml', 'after.yml', plainResult],
   ['before.ini', 'after.ini', plainResult],
 ])(
-  'output in plain format',
+  'output in plain text format',
   (fileName1, fileName2, expected) => {
     const received = gendiff(getPath(fileName1), getPath(fileName2), 'plain');
+    expect(received).toBe(expected);
+  },
+);
+
+const jsonResult = fs.readFileSync(getPath('result.json'), 'utf8').trim();
+
+test.each([
+  ['before.json', 'after.json', jsonResult],
+  ['before.yml', 'after.yml', jsonResult],
+  ['before.ini', 'after.ini', jsonResult],
+])(
+  'output in json format',
+  (fileName1, fileName2, expected) => {
+    const received = gendiff(getPath(fileName1), getPath(fileName2), 'json');
     expect(received).toBe(expected);
   },
 );
