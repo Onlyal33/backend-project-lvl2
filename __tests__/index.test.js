@@ -1,45 +1,42 @@
 import fs from 'fs';
 import gendiff from '../src';
 
-const getPath = (fileName) => `${__dirname}/__fixtures__/${fileName}`;
-
-const result = fs.readFileSync(getPath('result.txt'), 'utf8').trim();
+const getPath = (fileName) => `${__dirname}/../__fixtures__/${fileName}`;
 
 test.each([
-  ['before.json', 'after.json', result],
-  ['before.yml', 'after.yml', result],
-  ['before.ini', 'after.ini', result],
+  ['before.json', 'after.json'],
+  ['before.yml', 'after.yml'],
+  ['before.ini', 'after.ini'],
 ])(
   'default output',
-  (fileName1, fileName2, expected) => {
+  (fileName1, fileName2) => {
+    const expected = fs.readFileSync(getPath('result.txt'), 'utf8');
     const received = gendiff(getPath(fileName1), getPath(fileName2), 'tree');
-    expect(received).toBe(expected);
+    expect(received).toBe(expected.trim());
   },
 );
 
-const plainResult = fs.readFileSync(getPath('plainResult.txt'), 'utf8').trim();
-
 test.each([
-  ['before.json', 'after.json', plainResult],
-  ['before.yml', 'after.yml', plainResult],
-  ['before.ini', 'after.ini', plainResult],
+  ['before.json', 'after.json'],
+  ['before.yml', 'after.yml'],
+  ['before.ini', 'after.ini'],
 ])(
   'output in plain text format',
-  (fileName1, fileName2, expected) => {
+  (fileName1, fileName2) => {
+    const expected = fs.readFileSync(getPath('plainResult.txt'), 'utf8').trim();
     const received = gendiff(getPath(fileName1), getPath(fileName2), 'plain');
     expect(received).toBe(expected);
   },
 );
 
-const jsonResult = fs.readFileSync(getPath('result.json'), 'utf8').trim();
-
 test.each([
-  ['before.json', 'after.json', jsonResult],
-  ['before.yml', 'after.yml', jsonResult],
-  ['before.ini', 'after.ini', jsonResult],
+  ['before.json', 'after.json'],
+  ['before.yml', 'after.yml'],
+  ['before.ini', 'after.ini'],
 ])(
   'output in json format',
-  (fileName1, fileName2, expected) => {
+  (fileName1, fileName2) => {
+    const expected = fs.readFileSync(getPath('result.json'), 'utf8').trim();
     const received = gendiff(getPath(fileName1), getPath(fileName2), 'json');
     expect(received).toBe(expected);
   },
