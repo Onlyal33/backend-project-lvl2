@@ -11,9 +11,9 @@ const testDataset = [
 test.each(testDataset)(
   'default output',
   (fileName1, fileName2) => {
-    const expected = fs.readFileSync(getPath('result.txt'), 'utf8');
+    const expected = fs.readFileSync(getPath('result.txt'), 'utf8').trim();
     const received = gendiff(getPath(fileName1), getPath(fileName2), 'tree');
-    expect(received).toBe(expected.trim());
+    expect(received).toBe(expected);
   },
 );
 
