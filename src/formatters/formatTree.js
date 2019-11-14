@@ -20,16 +20,12 @@ const stringify = {
   removed: ({ key, valueBefore }, nesting) => `${getWhitespaces(nesting, true)}- ${key}: ${stringifyValue(valueBefore, nesting)}\n`,
   unchanged: ({ key, value }, nesting) => `${getWhitespaces(nesting)}${key}: ${stringifyValue(value, nesting)}\n`,
   changed: ({ key, valueBefore, valueAfter }, nesting) => `${stringify.removed({ key, valueBefore }, nesting)}${stringify.added({ key, valueAfter }, nesting)}`,
-  parent: ({ key }, nesting) => `${getWhitespaces(nesting)}${key}: `,
+  parent: ({ key, children }, nesting, func) => `${getWhitespaces(nesting)}${key}: ${func(children, nesting + 1)}`,
 };
 
 export default (ast) => {
   const iter = (internalDiff, nesting) => {
-    const result = internalDiff.reduce((acc, item) => {
-      const newAcc = `${acc}${stringify[item.status](item, nesting)}`;
-      return item.children instanceof Array ? `${newAcc}${iter(item.children, nesting + 1)}` : newAcc;
-    },
-    '');
+    const result = internalDiff.reduce((acc, item) => `${acc}${stringify[item.status](item, nesting, iter)}`, '');
     return `{\n${result}${getWhitespaces(nesting - 1)}}\n`;
   };
 

@@ -1,21 +1,16 @@
 import fs from 'fs';
 import path from 'path';
-import parsers from './parsers';
+import parse from './parsers';
 import build from './build';
-import formatters from './formatters';
+import format from './formatters';
 
-const dataTypes = {
-  '.json': 'json',
-  '.yml': 'yaml',
-  '.yaml': 'yaml',
-  '.ini': 'ini',
-};
+const getInputFormat = (extension) => extension.slice(1);
 
-const getDataType = (extension) => dataTypes[extension];
-
-export default (path1, path2, format) => {
-  const config1 = parsers(getDataType(path.extname(path1)))(fs.readFileSync(path1, 'utf-8'));
-  const config2 = parsers(getDataType(path.extname(path2)))(fs.readFileSync(path2, 'utf-8'));
+export default (path1, path2, outputFormat) => {
+  const inputFormat1 = getInputFormat(path.extname(path1));
+  const inputFormat2 = getInputFormat(path.extname(path2));
+  const config1 = parse(inputFormat1)(fs.readFileSync(path1, 'utf-8'));
+  const config2 = parse(inputFormat2)(fs.readFileSync(path2, 'utf-8'));
   const ast = build(config1, config2);
-  return formatters(format)(ast);
+  return format(outputFormat)(ast);
 };

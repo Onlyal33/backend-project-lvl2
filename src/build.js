@@ -28,11 +28,10 @@ const nodeTypes = [
   },
 ];
 
-const build = (data1, data2, acc = []) => _.union(Object.keys(data1), Object.keys(data2))
-  .reduce((accIter, key) => {
+const build = (data1, data2) => _.union(Object.keys(data1), Object.keys(data2))
+  .map((key) => {
     const [nodeType] = nodeTypes.filter(({ check }) => check(data1, data2, key));
-    return [...accIter, nodeType.action(key, data1[key], data2[key], build)];
-  },
-  acc);
+    return nodeType.action(key, data1[key], data2[key], build);
+  });
 
 export default build;
