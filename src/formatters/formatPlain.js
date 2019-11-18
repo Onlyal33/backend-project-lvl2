@@ -5,7 +5,7 @@ const stringifyValue = (value) => {
     return '[complex value]';
   }
 
-  return Number.isNaN(Number(value)) ? `'${value}'` : `${value}`;
+  return Number.isNaN(Number(value)) ? `'${value}'` : value;
 };
 
 const stringify = {
@@ -17,7 +17,7 @@ const stringify = {
 };
 
 export default (ast) => {
-  const iter = (array, path) => array.map((item) => stringify[item.status](item, path, iter));
+  const iter = (array, path) => array.map((item) => stringify[item.type](item, path, iter));
   return _.flattenDeep(iter(ast, ''))
     .filter((item) => item !== '')
     .join('\n');
