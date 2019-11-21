@@ -2,42 +2,42 @@ import _ from 'lodash';
 
 const indent = 4;
 
-const getWhitespaces = (nesting, sign = ' ') => {
-  if (nesting === 0) {
+const getWhitespaces = (depth, sign = ' ') => {
+  if (depth === 0) {
     return '';
   }
-  const whitespaceQuantity = nesting * indent - 2;
+  const whitespaceQuantity = depth * indent - 2;
   return `${' '.repeat(whitespaceQuantity)}${sign} `;
 };
 
-const stringifyProperty = (key, value, nesting, sign) => `${getWhitespaces(nesting, sign)}${key}: ${value}`;
+const stringifyProperty = (key, value, depth, sign) => `${getWhitespaces(depth, sign)}${key}: ${value}`;
 
-const stringifyArrayOfRenderedProperties = (array, nesting) => `{\n${array.join('\n')}\n${getWhitespaces(nesting - 1)}}`;
+const stringifyArrayOfRenderedProperties = (array, depth) => `{\n${array.join('\n')}\n${getWhitespaces(depth - 1)}}`;
 
-const renderObject = (object, nesting) => {
+const renderObject = (object, depth) => {
   const properties = Object.entries(object).map(
-    ([key, value]) => stringifyProperty(key, value, nesting),
+    ([key, value]) => stringifyProperty(key, value, depth),
   );
-  return stringifyArrayOfRenderedProperties(properties, nesting);
+  return stringifyArrayOfRenderedProperties(properties, depth);
 };
 
-const renderProperty = (key, value, nesting, sign) => {
-  const renderedValue = _.isPlainObject(value) ? renderObject(value, nesting + 1) : value;
-  return stringifyProperty(key, renderedValue, nesting, sign);
+const renderProperty = (key, value, depth, sign) => {
+  const renderedValue = _.isPlainObject(value) ? renderObject(value, depth + 1) : value;
+  return stringifyProperty(key, renderedValue, depth, sign);
 };
 
 const stringify = {
-  added: ({ key, valueAfter }, nesting) => renderProperty(key, valueAfter, nesting, '+'),
-  removed: ({ key, valueBefore }, nesting) => renderProperty(key, valueBefore, nesting, '-'),
-  unchanged: ({ key, value }, nesting) => renderProperty(key, value, nesting),
-  changed: ({ key, valueBefore, valueAfter }, nesting) => `${stringify.removed({ key, valueBefore }, nesting)}\n${stringify.added({ key, valueAfter }, nesting)}`,
-  parent: ({ key, children }, nesting, f) => renderProperty(key, f(children, nesting + 1), nesting),
+  added: ({ key, valueAfter }, depth) => renderProperty(key, valueAfter, depth, '+'),
+  removed: ({ key, valueBefore }, depth) => renderProperty(key, valueBefore, depth, '-'),
+  unchanged: ({ key, value }, depth) => renderProperty(key, value, depth),
+  changed: ({ key, valueBefore, valueAfter }, depth) => `${stringify.removed({ key, valueBefore }, depth)}\n${stringify.added({ key, valueAfter }, depth)}`,
+  parent: ({ key, children }, depth, f) => renderProperty(key, f(children, depth + 1), depth),
 };
 
 export default (ast) => {
-  const iter = (array, nesting) => {
-    const result = array.map((item) => stringify[item.type](item, nesting, iter));
-    return stringifyArrayOfRenderedProperties(result, nesting);
+  const iter = (array, depth) => {
+    const result = array.map((item) => stringify[item.type](item, depth, iter));
+    return stringifyArrayOfRenderedProperties(result, depth);
   };
 
   return iter(ast, 1);

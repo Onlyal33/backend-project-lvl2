@@ -12,13 +12,13 @@ const stringify = {
   added: ({ key, valueAfter }, path) => `Property '${path}${key}' was added with value: ${stringifyValue(valueAfter)}`,
   removed: ({ key }, path) => `Property '${path}${key}' was removed`,
   changed: ({ key, valueBefore, valueAfter }, path) => `Property '${path}${key}' was updated. From ${stringifyValue(valueBefore)} to ${stringifyValue(valueAfter)}`,
-  unchanged: () => '',
+  unchanged: () => null,
   parent: ({ key, children }, path, func) => func(children, `${path}${key}.`),
 };
 
 export default (ast) => {
   const iter = (array, path) => array.map((item) => stringify[item.type](item, path, iter));
   return _.flattenDeep(iter(ast, ''))
-    .filter((item) => item !== '')
+    .filter((item) => item !== null)
     .join('\n');
 };
